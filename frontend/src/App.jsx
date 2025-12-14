@@ -39,7 +39,7 @@ function App() {
       setTimeout(() => {
         runDemoMode();
         setLoading(false);
-      }, 2000); // Fake 2-second loading for realism
+      }, 2000); 
     }
   };
 
@@ -60,7 +60,7 @@ function App() {
     <div className="container">
       <div className="card">
         <h1>GitGrade_AI</h1>
-        <p className="subtitle">SYSTEM STATUS: {isLocal ? "LOCAL CONNECTION" : "CLOUD DEMO"}</p>
+        <p className="subtitle">SYSTEM STATUS: {isLocal ? "LOCAL CONNECTION" : "ONLINE"}</p>
         
         <div className="input-group">
           <input 
