@@ -10,8 +10,7 @@ function App() {
 
   // DETECT ENVIRONMENT: Are we on Localhost or Vercel?
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-  const API_URL = "http://localhost:8000/analyze"; 
-
+  const API_URL = "https://your-render-name.onrender.com/analyze";
   const handleAnalyze = async () => {
     if (!url) return;
     
