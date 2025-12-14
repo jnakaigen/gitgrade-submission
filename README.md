@@ -16,17 +16,22 @@ https://drive.google.com/file/d/1WhqVruU8w9cU1FvFNTvZIhJE7o6t4e4b/view?usp=drive
 ## Live on
 https://gitgrade-submission.vercel.app/
 
+
 ## ✨ Key Features
-* **AI-Powered Analysis:** Uses Google Gemini Pro to understand code context.
-* **Instant Scoring:** Generates a quality score (0-100) based on best practices.
-* **Actionable Roadmap:** Provides specific, technical steps to improve the codebase.
-* **Modern UI:** Built with React & Glassmorphism design for a premium experience.
+
+* **⚡ Ultra-Fast AI Analysis:** Uses **Groq (Llama-3-70b)** for near-instant inference, replacing traditional slow APIs.
+* **🧠 Intelligent Scoring:** Generates a quality score (0-100) based on architectural best practices and documentation quality.
+* **🗺️ Actionable Roadmap:** Provides 3 concrete, technical steps to improve the codebase immediately.
+* **💎 Modern UI:** Built with React & Glassmorphism design for a premium user experience.
+* **☁️ Cloud Native:** Fully deployed microservices architecture (Frontend on Vercel, Backend on Render).
 
 ## 🛠️ Tech Stack
+
 * **Frontend:** React + Vite (Glassmorphism UI)
 * **Backend:** Python + FastAPI
-* **AI Engine:** Google Gemini Pro (via `google-generativeai`)
-* **Integration:** GitHub API (`PyGithub`)
+* **AI Engine:** Groq Cloud (Llama-3-70b-Versatile)
+* **Deployment:** Vercel (Frontend) + Render (Backend)
+* **Integration:** GitHub API (PyGithub)
 
 ---
 
