@@ -81,5 +81,6 @@ Wait for the AI to analyze the file structure and README.
 
 View your Score, Summary, and Personalized Roadmap.
 
+```
 🛡️ License
 This project is open-source and available under the MIT License.
