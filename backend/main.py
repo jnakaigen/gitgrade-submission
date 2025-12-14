@@ -5,8 +5,9 @@ from pydantic import BaseModel
 from github import Github
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import google.generativeai as genai
+from openai import OpenAI  # Keep this! Groq uses the OpenAI library.
 import re
+
 load_dotenv()
 
 app = FastAPI()
@@ -19,19 +20,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Setup Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-2.0-flash')
+# --- SETUP GROQ (Free & Fast) ---
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"), 
+    base_url="https://api.groq.com/openai/v1"  # <--- MAGIC LINE
+)
+
+# Github Setup
 token = os.getenv("GITHUB_TOKEN")
 g = Github(token)
 
 class RepoRequest(BaseModel):
     url: str
 
-def analyze_with_gemini(file_tree, readme_content):
-    prompt = f"""
-    Act as a Principal Software Engineer at Google. Conduct a strict code review.
+def analyze_with_ai(file_tree, readme_content):
+    system_prompt = "Act as a Principal Software Engineer. Conduct a strict code review. Output ONLY valid JSON."
     
+    user_prompt = f"""
     REPO CONTEXT:
     File Structure: {file_tree}
     README Content: {readme_content[:4000]}
@@ -48,42 +53,42 @@ def analyze_with_gemini(file_tree, readme_content):
       "roadmap": ["Step 1", "Step 2", "Step 3"]
     }}
     """
+    
     try:
-        response = model.generate_content(prompt)
-        match = re.search(r"\{.*\}", response.text, re.DOTALL)
-        if match:
-            return json.loads(match.group(0))
-        else:
-            raise ValueError("No JSON found")
+        response = client.chat.completions.create(
+            # Use Llama-3 (It is free and very smart)
+            model="llama-3.3-70b-versatile", 
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            stream=False,
+            # Groq supports JSON mode too!
+            response_format={ "type": "json_object" } 
+        )
+        
+        content = response.choices[0].message.content
+        return json.loads(content)
             
     except Exception as e:
-        print(f"AI LIMIT REACHED. SWITCHING TO DEMO MODE. Error: {e}")
-        # FALLBACK: Returns a fake "Success" so your video doesn't fail!
+        print(f"AI ERROR. SWITCHING TO DEMO. Error: {e}")
         return {
             "score": 88, 
-            "summary": "This repository demonstrates a robust microservices architecture with clear separation of concerns. The codebase uses modern best practices, though documentation could be expanded for the API endpoints.", 
-            "roadmap": [
-                "Implement CI/CD pipelines using GitHub Actions for automated testing.",
-                "Add comprehensive unit tests using PyTest to increase code coverage.",
-                "Dockerize the application to ensure consistent deployment environments."
-            ]
+            "summary": "Demo Mode: API Limit Reached.", 
+            "roadmap": ["Check API Quota", "Verify Internet", "Restart Server"]
         }
 
 @app.post("/analyze")
 async def analyze_repo(request: RepoRequest):
-    print(f"Received URL: {request.url}") # Debug Print
+    print(f"Received URL: {request.url}") 
     
     try:
-        # Robust URL Cleaner
         clean_url = request.url.strip()
         if "github.com/" in clean_url:
             clean_url = clean_url.split("github.com/")[1]
         clean_url = clean_url.strip("/")
         
-        print(f"Trying to fetch Repo: '{clean_url}'") # Debug Print
-        
         repo = g.get_repo(clean_url)
-
         try:
             readme = repo.get_readme().decoded_content.decode("utf-8")
         except:
@@ -92,13 +97,12 @@ async def analyze_repo(request: RepoRequest):
         contents = repo.get_contents("")
         file_tree = [c.path for c in contents]
         
-        return analyze_with_gemini(file_tree, readme)
+        return analyze_with_ai(file_tree, readme)
 
     except Exception as e:
-        # THIS PRINTS THE REAL ERROR TO YOUR TERMINAL
-        print(f"\n!!!!! CRITICAL ERROR !!!!!\n{e}\n")
+        print(f"CRITICAL ERROR: {e}")
         raise HTTPException(status_code=400, detail=f"Error: {str(e)}")
 
 @app.get("/")
 def home():
-    return {"message": "GitGrade is Ready"}
+    return {"message": "GitGrade (Groq Edition) is Ready"}
