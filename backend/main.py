@@ -6,7 +6,7 @@ from github import Github
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import google.generativeai as genai
-
+import re
 load_dotenv()
 
 app = FastAPI()
@@ -21,9 +21,7 @@ app.add_middleware(
 
 # Setup Gemini
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-pro')
-
-# Setup GitHub
+model = genai.GenerativeModel('gemini-2.0-flash')
 token = os.getenv("GITHUB_TOKEN")
 g = Github(token)
 
