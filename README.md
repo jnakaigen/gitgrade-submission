@@ -1,13 +1,15 @@
 # GitGrade 🚀 | AI-Powered GitHub Repository Evaluator
 
 ![GitGrade Demo](screenshot.png) 
-*(Add a screenshot of your UI here named screenshot.png, or delete this line)*
+
 
 ## 💡 Overview
 **GitGrade** is an intelligent developer tool built for the **[Hackathon Name]** that instantly audits GitHub repositories. By leveraging **Google Gemini Pro**, it analyzes file structures and documentation to provide a comprehensive quality score, executive summary, and actionable roadmap for improvement.
 
 ## 🎥 Demo Video
-**[🔴 WATCH THE DEMO VIDEO HERE](YOUR_YOUTUBE_OR_DRIVE_LINK_HERE)**
+[🔴 WATCH THE DEMO VIDEO HERE]
+https://drive.google.com/file/d/1WhqVruU8w9cU1FvFNTvZIhJE7o6t4e4b/view?usp=drive_link
+
 
 ## ✨ Key Features
 * **AI-Powered Analysis:** Uses Google Gemini Pro to understand code context.
