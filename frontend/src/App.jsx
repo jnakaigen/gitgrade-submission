@@ -8,8 +8,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // IMPORTANT: This points to your local Python backend
-const API_URL = "http://localhost:8000/analyze";
+  // IMPORTANT: Points to your Python backend
+  const API_URL = "http://localhost:8000/analyze"; 
+
   const handleAnalyze = async () => {
     if (!url) return;
     
@@ -18,12 +19,11 @@ const API_URL = "http://localhost:8000/analyze";
     setData(null);
 
     try {
-      // Send the URL to your backend
       const response = await axios.post(API_URL, { url });
       setData(response.data);
     } catch (err) {
       console.error(err);
-      setError("Failed to connect. Is your Python backend running?");
+      setError("CONNECTION ERROR: Backend not found or API Limit Reached.");
     }
     setLoading(false);
   };
@@ -31,37 +31,45 @@ const API_URL = "http://localhost:8000/analyze";
   return (
     <div className="container">
       <div className="card">
-        <h1>GitGrade</h1>
-        <p>AI-Powered Repository Evaluator</p>
+        <h1>GitGrade_AI</h1>
+        <p className="subtitle">SYSTEM STATUS: ONLINE</p>
         
         <div className="input-group">
           <input 
             type="text" 
-            placeholder="Paste GitHub Repository URL..." 
+            placeholder="ENTER REPOSITORY URL..." 
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
           <button onClick={handleAnalyze} disabled={loading}>
-            {loading ? "Analyzing..." : "Grade It"}
+            {loading ? "SCANNING..." : "INITIATE"}
           </button>
         </div>
 
-        {error && <p className="error-msg">{error}</p>}
+        {error && <p style={{color: '#ff4444', fontFamily: 'Orbitron'}}>{error}</p>}
+
+        {loading && (
+           <div className="scanning-bar"></div>
+        )}
 
         {data && (
-          <div className="results fade-in">
-            <div className="score-box">
-              <h2>{data.score}</h2>
-              <span>/ 100</span>
+          <div className="results">
+            <div className="score-container">
+              <div className="score-circle">
+                <div className="score-text">
+                  <h2>{data.score}</h2>
+                  <span>QUALITY INDEX</span>
+                </div>
+              </div>
             </div>
             
             <div className="info-box">
-              <h3>Summary</h3>
+              <h3>// EXECUTIVE SUMMARY</h3>
               <p>{data.summary}</p>
             </div>
 
             <div className="info-box">
-              <h3>Personalized Roadmap</h3>
+              <h3>// OPTIMIZATION PROTOCOLS</h3>
               <ul>
                 {data.roadmap.map((item, index) => (
                   <li key={index}>{item}</li>
