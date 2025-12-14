@@ -1,6 +1,6 @@
 # GitGrade 🚀 | AI-Powered GitHub Repository Evaluator
 
-![GitGrade Demo]
+## GitGrade Demo
 
 ![gitgrade1](https://github.com/user-attachments/assets/dc1da22a-8103-456d-8ee0-7cc7ffba3e65)
 ![gitgrade2](https://github.com/user-attachments/assets/ada1e3bb-7d65-4d1f-a5f4-101df29d760a)
